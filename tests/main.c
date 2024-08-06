@@ -1,4 +1,3 @@
-
 #include "unity_internals.h"
 
 void setUp() {};

@@ -66,7 +66,6 @@ debug_run:
 clean:
 	@sudo rm -r build/ 
 	@sudo rm -r compile_commands.json
-	@sudo rm -r libs/
 	@sudo rm -r .cache/
 
 .PHONY: all clean

@@ -19,21 +19,13 @@ add_executable(main cmd/main.c ${SOURCE_FILES})
 add_executable(bench cmd/bench.c ${SOURCE_FILES})
 add_executable(tests ${TESTS_FILES} ${SOURCE_FILES})
 add_library(Unity STATIC libs/Unity/src/unity.c)
-
-include(FetchContent)
-
-FetchContent_Declare(
-  Unity
-  GIT_REPOSITORY https://github.com/ThrowTheSwitch/Unity
-  GIT_TAG v2.6.0
-  SOURCE_DIR ${CMAKE_SOURCE_DIR}/libs/Unity)
-
-FetchContent_MakeAvailable(Unity)
+add_library(CMock STATIC libs/CMock/src/cmock.c)
 
 target_link_libraries(tests m)
 target_link_libraries(main m)
 target_link_libraries(bench m)
 target_link_libraries(tests Unity)
+target_link_libraries(tests CMock)
 
 enable_testing()
 add_test(NAME tests COMMAND tests)
