@@ -48,12 +48,10 @@ void rezise_hash_table(struct hash_table* ht) {
     struct hash_table_node* dq = NULL;
     while (curr_table->length > 0) {
       if (curr_table->length == 1) {
-        printf("Deleting 1 length %d head %p\n", curr_table->length, curr_table->head);
         dq = curr_table->head;
         curr_table->head = NULL;
         curr_table->length--;
       } else {
-        printf("Deleting ++ length %d\n", curr_table->length);
         dq = curr_table->head;
         curr_table->head = dq->next;
         curr_table->length--;
@@ -78,7 +76,6 @@ int djb2(char* key, int size) {
 }
 
 int* get_from_hash_table(struct hash_table* ht, char* key) {
-  printf("Getting key %s index %d\n", key, djb2(key, ht->size));
   struct hash_table_list* htl = *(ht->table + djb2(key, ht->size));
   struct hash_table_node* curr = htl->head;
   for (int i = 0; i < htl->length; i++) {
@@ -92,7 +89,6 @@ int* get_from_hash_table(struct hash_table* ht, char* key) {
 
 void insert_on_hash_table(struct hash_table* ht, char* key, int* value) {
   int i = djb2(key, ht->size);
-  printf("Inserting value %s key %s index %d\n", value, key, i);
   struct hash_table_node* new_node = malloc(sizeof(struct hash_table_node));
   struct hash_table_list* curr_table = *(ht->table + i);
   new_node->key = key;
@@ -107,19 +103,16 @@ void insert_on_hash_table(struct hash_table* ht, char* key, int* value) {
   curr_table->length++;
   ht->length++;
   if (ht->length == ht->size * 2) {
-    printf("Resizing!\n");
     rezise_hash_table(ht);
   }
 }
 
 int* delete_on_hash_table(struct hash_table* ht, char* key) {
   struct hash_table_list* htl = *(ht->table + djb2(key, ht->size));
-  printf("Deleting key %s index %d length %d\n", key, djb2(key, ht->size), htl->length);
 
   if (htl->length > 0) {
     struct hash_table_node* curr = (struct hash_table_node*)htl->head;
     if (curr->key == key) {
-      printf("Deleting head\n");
       int* r = curr->value;
       htl->length--;
       ht->length--;
@@ -133,7 +126,6 @@ int* delete_on_hash_table(struct hash_table* ht, char* key) {
     }
 
     while (curr != NULL) {
-      printf("Deleting recursing\n");
       if (curr->next != NULL) {
         if (curr->next->key == key) {
           struct hash_table_node* tmp = curr->next;
@@ -154,7 +146,6 @@ int* delete_on_hash_table(struct hash_table* ht, char* key) {
 }
 
 int* update_on_hash_table(struct hash_table* ht, char* key, int* new_value) {
-  printf("Updating key %s new value %s index %d\n", key, new_value, djb2(key, ht->size));
   struct hash_table_list* htl = *(ht->table + djb2(key, ht->size));
   struct hash_table_node* curr = htl->head;
   for (int i = 0; i < htl->length; i++) {
